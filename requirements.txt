@@ -1,0 +1,10 @@
+numpy 
+pandas
+transformers
+tensorflow
+keras
+fastapi
+uvicorn
+image
+pydantic
+typing
