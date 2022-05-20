@@ -22,15 +22,15 @@
       "intent": "goodbye",
       "text": [
         "Bye",
-        "See you later",
-        "Goodbye",
+        "Hope you get well soon",
+        "Takecare",
         "Nice chatting to you, bye",
-        "Till next time"
+        "Stay Positive, Bye"
       ],
       "responses": [
         "See you!",
         "Have a nice day",
-        "Bye! Come back again soon."
+        "Bye!"
       ],
       "context": [""]
     },

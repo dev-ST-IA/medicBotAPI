@@ -8,6 +8,10 @@ import os
 from pydantic import BaseModel
 from typing import Dict
 import chat as chat
+from db import saveChat
+import json
+import random
+intents = json.loads(open('intents.json').read())
 
 PORT = int(os.getenv("PORT", 8080)) 
 log_config = LOGGING_CONFIG
@@ -41,17 +45,32 @@ class Response(BaseModel):
 async def root(message:UserInput):
     text = message.message
     results = chat.chatbot_response(text) #predict
+    probRes = float(results['responseClass']['probability'])*100 
+
+    if(probRes < 70):
+        list_of_intents = intents['intents']
+        output_dict = [x for x in list_of_intents if x['intent'] == 'noanswer']
+        filteredIntent = output_dict[0]
+        result = random.choice(filteredIntent['responses'])
+        results = {
+        'response': result,
+        'responseClass': {
+            'intent': 'noanswer',
+            'probability': probRes/100
+            }
+        }
+    await saveChat(text, results)
     return results
 
 @app.get("/")
-async def root():
+async def root(): 
     return {"message": "Chat is up!"}
 
     
 if __name__  == "__main__":
 	run(app, host="0.0.0.0", port=PORT,log_config=log_config)
 
-
+ 
 # to run 
 # python -m uvicorn main:app --reload
 
